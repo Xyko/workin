@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+require 'workin'
+require 'thor'
+
+Signal.trap("INT") { 
+  puts "\n\tNote: You will typically use Signal.trap instead.\n".light_red
+  exit
+}
+
+Signal.trap("TERM") {
+  puts "\n\tNote: You will typically use Signal.trap instead.\n".light_red
+  exit
+}
+
+load Workin.files + '/requireds.rb'
+
+class Workin_exec < Thor
+
+  desc 'help', ''
+  def help(command='')
+  	puts "\thelp will be here..... Coming soon....".light_green
+  end
+
+  desc 'show', ''
+  def show(command='')
+    puts "Gem_path.:  #{Workin.gem_path}"
+    puts "Ldap_pass.: #{Workin.ldap_pass}"
+    puts "Ldap_user.: #{Workin.ldap_user}"
+    puts "User.:      #{Workin.user}"
+    puts "Pwd.:       #{Workin.pwd}"
+    puts "Host.:      #{Workin.host}"
+    puts "Files:      #{Workin.files}"
+  end
+
+  desc 'console', ''
+  def console
+    WorkinConsole.create_console
+    WorkinConsole.run_console
+  end
+
+  def method_missing(method, *args, &block)
+    
+    exit()
+  end
+
+end
+
+begin
+  Workin_exec.start(ARGV)
+rescue SystemExit => e
+  puts "\tExiting workin gem... See you later...".light_green
+  exit(e.status)
+rescue Exception => e
+  puts e
+endworkin cadvlan

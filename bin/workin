@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 require 'workin'
-require 'thor'
+# require 'tools'
+# require 'thor'
 
 Signal.trap("INT") { 
   puts "\n\tNote: You will typically use Signal.trap instead.\n".light_red
@@ -17,13 +18,8 @@ load Workin.files + '/requireds.rb'
 
 class Workin_exec < Thor
 
-  desc 'help', ''
-  def help(command='')
-  	puts "\thelp will be here..... Coming soon....".light_green
-  end
-
-  desc 'show', ''
-  def show(command='')
+  desc 'info', 'Show working gem info.'
+  def info(command='')
     puts "Gem_path.:  #{Workin.gem_path}"
     puts "Ldap_pass.: #{Workin.ldap_pass}"
     puts "Ldap_user.: #{Workin.ldap_user}"
@@ -31,16 +27,25 @@ class Workin_exec < Thor
     puts "Pwd.:       #{Workin.pwd}"
     puts "Host.:      #{Workin.host}"
     puts "Files:      #{Workin.files}"
+    ToolsDisplay.show "TEXT SAMELINE sem cor ", :sameline
+    ToolsDisplay.show "TEXT GREEN", :green
+    ToolsDisplay.show "TEXT YELLOW", :yellow
   end
 
-  desc 'console', ''
-  def console
-    WorkinConsole.create_console
-    WorkinConsole.run_console
+  desc 'setdir', 'Set a new source directory.'
+  long_desc <<-LONGDESC
+    `working setdir` will register directories base to will scanend.
+    > $ working setdir /opt/my_projects . ../
+  LONGDESC
+  def setdir(*dirs)
+    ap dirs
+    ap 'setdir'
   end
 
   def method_missing(method, *args, &block)
     
+    ap method
+
     exit()
   end
 
@@ -53,4 +58,4 @@ rescue SystemExit => e
   exit(e.status)
 rescue Exception => e
   puts e
-endworkin cadvlan
+end

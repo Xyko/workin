@@ -1,5 +1,7 @@
-help
 history
-config
 config show
+help
+show config
+config dir
+config
 exit

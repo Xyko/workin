@@ -1,4 +1,4 @@
 module Workin
 	VERSION = "0.1.0"
-	HOMEPAGE = "https://xykogems.org"
+	HOMEPAGE = "https://github.com/Xyko/workin"
 end

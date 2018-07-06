@@ -29,6 +29,15 @@ task :dev do
   system("ln -s #{source} #{target}")
   system("ln -s #{source}/bin/workin #{target_bin}")
 
+  dir = "../tools/pkg/"
+  gems = {}
+  Dir.glob("#{dir}/*.gem").each do |source|
+    Dir[source].each do |file|
+      gems[(File.mtime file).to_i] = file
+    end
+  end
+  system("gem install #{gems.sort.last[1]}")
+
   puts 'You may now start editing and testing files from within this repo.'.green
 end
 

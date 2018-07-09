@@ -1,8 +1,12 @@
 #!/usr/bin/env ruby
 # coding: utf-8
 require 'workin'
-# require 'tools'
-# require 'thor'
+require 'tools'
+
+require "thor"  
+require "thor/group"  
+require "lib/main"
+
 
 Signal.trap("INT") { 
   puts "\n\tNote: You will typically use Signal.trap instead.\n".light_red
@@ -16,31 +20,61 @@ Signal.trap("TERM") {
 
 load Workin.files + '/requireds.rb'
 
+
 class Workin_exec < Thor
 
-  desc 'info', 'Show working gem info.'
-  def info(command='')
-    puts "Gem_path.:  #{Workin.gem_path}"
-    puts "Ldap_pass.: #{Workin.ldap_pass}"
-    puts "Ldap_user.: #{Workin.ldap_user}"
-    puts "User.:      #{Workin.user}"
-    puts "Pwd.:       #{Workin.pwd}"
-    puts "Host.:      #{Workin.host}"
-    puts "Files:      #{Workin.files}"
-    ToolsDisplay.show "TEXT SAMELINE sem cor ", :sameline
-    ToolsDisplay.show "TEXT GREEN", :green
-    ToolsDisplay.show "TEXT YELLOW", :yellow
+  include Thor::Actions
+
+  check_unknown_options!
+  desc 'version', 'Display MyGem version'
+  map %w[-v --version] => :version
+  class_option 'verbose',  :type => :boolean, :default => false
+ 
+  # register(WorkinCmd::Bar, 'bar', "bar <subcommand>".green, 'Commands for bar.')
+  # register(WorkinCmd::Baz, 'baz', "baz <subcommand>".green, 'Commands for baz.')
+
+  register(Setup, 'setup', "setup <subcommand>", 'Commands for baz.')
+
+  class << self
+    def help(shell, subcommand = false)  
+      list = printable_commands(true, subcommand)
+      Thor::Util.thor_classes_in(self).each do |klass|
+        list += klass.printable_commands(false)
+      end
+
+      list.sort! { |a, b| a[0] <=> b[0] }
+      list.reject! {|l| l[0].split[1] == 'help'}
+      if defined?(@package_name) && @package_name
+        shell.say "#{@package_name} commands:"
+      else
+        shell.say "Commands:"
+      end
+      shell.print_table(list, :indent => 2, :truncate => true)
+      shell.say
+      class_options_help(shell)
+      shell.say 'All commands/subcommands can be run with -h (or --help) for more information.'
+    end
   end
 
-  desc 'setdir', 'Set a new source directory.'
-  long_desc <<-LONGDESC
-    `working setdir` will register directories base to will scanend.
-    > $ working setdir /opt/my_projects . ../
-  LONGDESC
-  def setdir(*dirs)
-    ap dirs
-    ap 'setdir'
+  desc 'version', 'Display version'
+  map %w[-v --version] => :version
+  def version
+    say "Workin #{Workin::VERSION}"
   end
+
+  # desc 'info', 'Show working gem info.'
+  # def info(command='')
+  #   puts "Gem_path.:  #{Workin.gem_path}"
+  #   puts "Ldap_pass.: #{Workin.ldap_pass}"
+  #   puts "Ldap_user.: #{Workin.ldap_user}"
+  #   puts "User.:      #{Workin.user}"
+  #   puts "Pwd.:       #{Workin.pwd}"
+  #   puts "Host.:      #{Workin.host}"
+  #   puts "Files:      #{Workin.files}"
+  #   ToolsDisplay.show "TEXT SAMELINE sem cor ", :sameline
+  #   ToolsDisplay.show "TEXT GREEN", :green
+  #   ToolsDisplay.show "TEXT YELLOW", :yellow
+  # end
 
   def method_missing(method, *args, &block)
     

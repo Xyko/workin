@@ -1,4 +1,3 @@
-require 'awesome_print'
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require_relative 'lib/workin/version'
@@ -38,7 +37,7 @@ task :dev do
   end
   system("gem install #{gems.sort.last[1]}")
 
-  puts 'You may now start editing and testing files from within this repo.'.green
+  puts 'You may now start editing and testing files from within this repo.'
 end
 
 

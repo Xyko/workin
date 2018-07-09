@@ -2,20 +2,12 @@ PATH
   remote: .
   specs:
     workin (0.1.0)
-      awesome_print
-      colorize
-      prompt
-      thor
 
 GEM
   remote: https://rubygems.org/
   specs:
-    awesome_print (1.8.0)
-    colorize (0.8.1)
     minitest (5.11.3)
-    prompt (1.2.2)
     rake (10.5.0)
-    thor (0.20.0)
 
 PLATFORMS
   ruby

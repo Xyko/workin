@@ -1,10 +1,6 @@
 require "workin/version"
-require 'lib/tools'
-require 'lib/console'
 
 load __dir__ + '/files/requireds.rb'
-
-
 
 module Workin
   
@@ -32,13 +28,16 @@ module Workin
 
   end
 
-
   def self.root
     File.dirname __dir__
   end
 
   def self.files
     File.join root, 'lib/files'
+  end
+
+  def self.commands_dir
+    File.join root, 'lib/commands_dir'
   end
 
   def self.host
